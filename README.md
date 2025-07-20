@@ -47,7 +47,7 @@ ai-freelancer-marketplace/
 │   ├── learning/                 # Courses and quizzes
 │   ├── chat/                     # WebSocket-based chat
 │   ├── analytics/                # Microservices for reports
-│   ├── common/                   # Shared utilities (pipes, guards, interceptors, decorators)
+│   ├── common/                   # Shared utilities (pipes, guards, interceptors, decorators, entities)
 │   ├── config/                   # Environment configuration
 │   └── main.ts                   # Application bootstrap
 ├── test/                         # Unit and e2e tests

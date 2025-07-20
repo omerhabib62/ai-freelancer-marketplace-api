@@ -9,7 +9,14 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 
 @Module({
-  imports: [UsersModule, ProjectsModule, BidsModule, LearningModule, AuthModule, CommonModule],
+  imports: [
+    UsersModule,
+    ProjectsModule,
+    BidsModule,
+    LearningModule,
+    AuthModule,
+    CommonModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
