@@ -191,10 +191,3 @@ Feel free to fork the repository and submit pull requests. Report issues on [Git
 ## License
 
 MIT License
-
-## Contact
-
-- **Author**: [Your Name]
-- **Portfolio**: [Your Portfolio URL]
-- **LinkedIn**: [Your LinkedIn URL]
-- **Email**: [Your Email]
