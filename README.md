@@ -2,23 +2,25 @@
 
 ## Overview
 
-The **AI-Powered Freelancer Marketplace API** is a robust backend application built with [NestJS](https://nestjs.com/), designed to facilitate a freelance platform where clients post projects, freelancers bid, and freelancers enhance their skills through a learning module. The platform integrates **AI-driven recommendations** for projects and courses, real-time chat, and analytics, making it a unique and scalable solution for modern freelance marketplaces.
+The **AI-Powered Freelancer Marketplace API** is a scalable backend application built with [NestJS](https://nestjs.com/), enabling a freelance platform where clients post projects, freelancers bid with AI-suggested parameters, and freelancers enhance skills through a learning module with AI-personalized course recommendations. It features real-time chat, analytics, and a shared **Common Module** for reusable utilities, demonstrating mastery of all [NestJS documentation](https://docs.nestjs.com/) topics.
 
-This project demonstrates mastery of all [NestJS documentation](https://docs.nestjs.com/) topics, including controllers, modules, authentication, database integration, GraphQL, WebSockets, microservices, and more. It’s built with scalability and real-world applicability in mind, using a modern tech stack and best practices.
+This project showcases advanced backend development with AI integration, making it ideal for portfolios targeting ed-tech or freelance platform roles.
 
 ## Features
 
 - **User Management**: Register, log in, and manage profiles for freelancers and clients with role-based access ([Controllers](https://docs.nestjs.com/controllers), [Providers](https://docs.nestjs.com/providers), [Modules](https://docs.nestjs.com/modules)).
 - **Project Management**: Clients post projects; freelancers bid with AI-suggested amounts/timelines ([Pipes](https://docs.nestjs.com/pipes), [Validation](https://docs.nestjs.com/techniques/validation)).
-- **Learning Module**: Freelancers access courses and quizzes to improve skills, with AI-personalized recommendations ([Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)).
-- **Real-Time Chat**: WebSocket-based communication between clients and freelancers ([WebSockets](https://docs.nestjs.com/websockets/gateways)).
-- **File Uploads**: Upload project files or course materials securely ([File Upload](https://docs.nestjs.com/techniques/file-upload)).
-- **AI Recommendations**: Mock AI service for project and course suggestions based on user history ([Custom Decorators](https://docs.nestjs.com/custom-decorators)).
-- **Analytics**: Microservices generate reports (e.g., freelancer earnings, course completion) ([Microservices](https://docs.nestjs.com/microservices/basics), [Task Queues](https://docs.nestjs.com/techniques/queues)).
-- **Dual APIs**: REST and GraphQL endpoints for flexibility ([GraphQL](https://docs.nestjs.com/graphql/quick-start)).
-- **Security**: JWT authentication, role-based authorization, and secure headers ([Security](https://docs.nestjs.com/security)).
+- **Bidding System**: Competitive bidding with AI-driven suggestions ([Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)).
+- **Learning Module**: Courses and quizzes for freelancers to improve skills, with AI recommendations ([Modules](https://docs.nestjs.com/modules)).
+- **Real-Time Chat**: WebSocket-based client-freelancer communication ([WebSockets](https://docs.nestjs.com/websockets/gateways)).
+- **File Uploads**: Secure uploads for project files and course materials ([File Upload](https://docs.nestjs.com/techniques/file-upload)).
+- **AI Recommendations**: Mock AI service for project and course suggestions ([Custom Decorators](https://docs.nestjs.com/custom-decorators)).
+- **Analytics**: Microservices for reports (e.g., earnings, course completion) ([Microservices](https://docs.nestjs.com/microservices/basics), [Task Queues](https://docs.nestjs.com/techniques/queues)).
+- **Common Module**: Reusable utilities (pipes, guards, interceptors, decorators) for cross-cutting concerns ([Pipes](https://docs.nestjs.com/pipes), [Guards](https://docs.nestjs.com/guards), [Interceptors](https://docs.nestjs.com/interceptors)).
+- **APIs**: REST and GraphQL endpoints ([GraphQL](https://docs.nestjs.com/graphql/quick-start)).
+- **Security**: JWT authentication, role-based authorization, secure headers ([Security](https://docs.nestjs.com/security)).
 - **Documentation**: OpenAPI (Swagger) for API clarity ([OpenAPI](https://docs.nestjs.com/openapi/introduction)).
-- **Testing**: Comprehensive unit and e2e tests with >80% coverage ([Testing](https://docs.nestjs.com/fundamentals/testing)).
+- **Testing**: Unit and e2e tests with >80% coverage ([Testing](https://docs.nestjs.com/fundamentals/testing)).
 
 ## Tech Stack
 
@@ -27,10 +29,10 @@ This project demonstrates mastery of all [NestJS documentation](https://docs.nes
 - **Authentication**: JWT with `@nestjs/passport` ([Authentication](https://docs.nestjs.com/security/authentication))
 - **APIs**: REST (`@nestjs/platform-express`), GraphQL (`@nestjs/graphql`)
 - **Real-Time**: WebSockets (`@nestjs/websockets`, `@nestjs/platform-socket.io`)
-- **Task Queues**: Bull (`@nestjs/bull`) for background tasks
+- **Task Queues**: Bull (`@nestjs/bull`)
 - **Documentation**: Swagger (`@nestjs/swagger`)
 - **Testing**: Jest (`@nestjs/testing`)
-- **Deployment**: Docker for containerization
+- **Deployment**: Docker
 - **Other**: Helmet, CORS, class-validator, class-transformer
 
 ## Project Structure
@@ -45,7 +47,7 @@ ai-freelancer-marketplace/
 │   ├── learning/                 # Courses and quizzes
 │   ├── chat/                     # WebSocket-based chat
 │   ├── analytics/                # Microservices for reports
-│   ├── shared/                   # Pipes, guards, interceptors
+│   ├── common/                   # Shared utilities (pipes, guards, interceptors, decorators)
 │   ├── config/                   # Environment configuration
 │   └── main.ts                   # Application bootstrap
 ├── test/                         # Unit and e2e tests
@@ -89,7 +91,7 @@ ai-freelancer-marketplace/
    ```
 
 4. **Set Up PostgreSQL**:
-   - Create a database named `ai_freelancer_marketplace`.
+   - Create database: `ai_freelancer_marketplace`.
    - Update `DATABASE_URL` in `.env` if needed.
 5. **Run Migrations**:
 
@@ -106,10 +108,11 @@ ai-freelancer-marketplace/
    - REST API: `http://localhost:3000`
    - Swagger: `http://localhost:3000/api`
    - GraphQL: `http://localhost:3000/graphql`
+   - WebSocket: `/chat`
 
 ### Docker Setup
 
-1. Build and run with Docker:
+1. Build and run:
 
    ```bash
    docker build -t ai-freelancer-marketplace .
@@ -127,35 +130,38 @@ ai-freelancer-marketplace/
 - **Quizzes**: `POST /quizzes`, `POST /quizzes/submit`
 - **Chat**: WebSocket at `/chat`
 - **Analytics**: `GET /analytics/earnings/:freelancerId`
+- **Recommendations**: `GET /recommendations/projects/:freelancerId`, `GET /recommendations/courses/:freelancerId`
 
 ### GraphQL
 
-- Queries: `users`, `projects`, `courses`
-- Mutations: `createProject`, `placeBid`, `enrollCourse`
+- **Queries**: `users`, `projects`, `courses`, `bids`
+- **Mutations**: `createProject`, `placeBid`, `enrollCourse`, `submitQuiz`
 
-Explore the full API via Swagger at `/api` or GraphQL playground at `/graphql`.
+Explore via Swagger (`/api`) or GraphQL playground (`/graphql`).
 
 ## Unique Features
 
-- **AI Recommendations**: Suggests projects and courses based on freelancer skills and history, implemented with a mock AI service ([Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)).
-- **Learning Module**: Freelancers enhance skills through courses and quizzes, with progress tracking ([Modules](https://docs.nestjs.com/modules)).
-- **Real-Time Chat**: Persistent client-freelancer messaging via WebSockets ([WebSockets](https://docs.nestjs.com/websockets/gateways)).
-- **Competitive Bidding**: AI-suggested bids for freelancers, enhancing competitiveness ([Pipes](https://docs.nestjs.com/pipes)).
+- **AI Recommendations**: Suggests projects and courses based on freelancer skills/history ([Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)).
+- **Learning Module**: Courses and quizzes for skill enhancement ([Modules](https://docs.nestjs.com/modules)).
+- **Real-Time Chat**: Persistent messaging via WebSockets ([WebSockets](https://docs.nestjs.com/websockets/gateways)).
+- **Competitive Bidding**: AI-suggested bids for competitiveness ([Pipes](https://docs.nestjs.com/pipes)).
+- **Common Module**: Reusable utilities (e.g., logging interceptor, role guard) for maintainability ([Interceptors](https://docs.nestjs.com/interceptors), [Guards](https://docs.nestjs.com/guards)).
 
 ## Screenshots
 
-- **Swagger UI**: [Insert screenshot of Swagger interface]
-- **GraphQL Playground**: [Insert screenshot of GraphQL queries]
-- **Real-Time Chat**: [Insert screenshot of WebSocket chat]
+- **Swagger UI**: [Insert screenshot]
+- **GraphQL Playground**: [Insert screenshot]
+- **Real-Time Chat**: [Insert screenshot]
+- **AI Recommendations**: [Insert screenshot of recommended projects/courses]
 
 ## Deployment
 
-The API is deployed at [insert live URL, e.g., Heroku/Render]. Use Docker for local or production deployment.
+Deployed at [insert live URL]. Use Docker for local/production deployment.
 
 ## Testing
 
-- **Unit Tests**: Cover services and controllers (>80% coverage).
-- **E2E Tests**: Test API endpoints and workflows.
+- **Unit Tests**: Services and controllers (>80% coverage).
+- **E2E Tests**: API endpoints and workflows.
 Run tests:
 
 ```bash
@@ -165,18 +171,18 @@ npm run test:e2e
 
 ## Future Enhancements
 
-- Integrate a real AI API (e.g., Hugging Face) for advanced recommendations.
-- Add payment gateway integration for project contracts.
-- Implement notifications for bid updates.
+- Integrate real AI API (e.g., Hugging Face) for advanced recommendations.
+- Add payment gateway for contracts.
+- Implement notifications for bid/course updates.
 
 ## NestJS Documentation Coverage
 
-This project implements all NestJS documentation topics:
+This project covers all NestJS documentation topics:
 
 - **Overview**: Controllers, Providers, Modules, Middleware, Exception Filters, Pipes, Guards, Interceptors.
-- **Techniques**: Authentication, Database, Configuration, Validation, Serialization.
+- **Techniques**: Authentication, Database, Configuration, Validation, Serialization, File Upload, Task Queues.
 - **Fundamentals**: Custom Providers, Custom Decorators, Dependency Injection.
-- **CLI**: Used for scaffolding ([CLI Overview](https://docs.nestjs.com/cli/overview)).
+- **CLI**: Scaffolding with NestJS CLI ([CLI Overview](https://docs.nestjs.com/cli/overview)).
 - **Recipes**: OpenAPI, Task Queues.
 - **Security**: Authentication, Authorization, Helmet, CORS.
 - **GraphQL**: Dual API support.
@@ -186,7 +192,7 @@ This project implements all NestJS documentation topics:
 
 ## Contributing
 
-Feel free to fork the repository and submit pull requests. Report issues on [GitHub Issues](https://github.com/your-username/ai-freelancer-marketplace/issues).
+Fork the repository and submit pull requests. Report issues on [GitHub Issues](https://github.com/your-username/ai-freelancer-marketplace/issues).
 
 ## License
 
