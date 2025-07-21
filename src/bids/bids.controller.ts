@@ -8,6 +8,8 @@ import {
   Param,
 } from '@nestjs/common';
 import { BidsService } from './bids.service';
+import { CreateBidDto } from './dto/create-bid.dto';
+import { UpdateBidDto } from './dto/update-bid.dto';
 
 @Controller('bids')
 export class BidsController {
@@ -24,12 +26,12 @@ export class BidsController {
   }
 
   @Post()
-  create(@Body() createBidDto: any) {
+  create(@Body() createBidDto: CreateBidDto) {
     return this.bidsService.create(createBidDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateBidDto: any) {
+  update(@Param('id') id: string, @Body() updateBidDto: UpdateBidDto) {
     return this.bidsService.update(+id, updateBidDto);
   }
 
