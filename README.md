@@ -58,142 +58,84 @@ ai-freelancer-marketplace/
 └── README.md
 ```
 
-## Setup Instructions
+- `Dockerfile`: Defines the Docker image for the API service.
+- `docker-compose.yml`: Configures the API and PostgreSQL services.
+- `.env`: Stores environment variables for configuration.
+- `src/`: Contains the application source code (assumed).
 
-### Prerequisites
+## Getting Started
 
-- Node.js (v18+)
-- PostgreSQL
-- Docker (optional for deployment)
-- NestJS CLI (`npm i -g @nestjs/cli`)
-
-### Installation
-
-1. **Clone the Repository**:
-
-   ```bash
-   git clone https://github.com/your-username/ai-freelancer-marketplace.git
-   cd ai-freelancer-marketplace
-   ```
-
-2. **Install Dependencies**:
-
-   ```bash
-   npm install
-   ```
-
-3. **Set Up Environment Variables**:
-   Create a `.env` file:
-
-   ```plaintext
-   DATABASE_URL=postgres://postgres:password@localhost:5432/ai_freelancer_marketplace
-   JWT_SECRET=secretKey
-   ```
-
-4. **Set Up PostgreSQL**:
-   - Create database: `ai_freelancer_marketplace`.
-   - Update `DATABASE_URL` in `.env` if needed.
-5. **Run Migrations**:
-
-   ```bash
-   npm run typeorm:migration:run
-   ```
-
-6. **Start the Application**:
-
-   ```bash
-   npm run start:dev
-   ```
-
-   - REST API: `http://localhost:3000`
-   - Swagger: `http://localhost:3000/api`
-   - GraphQL: `http://localhost:3000/graphql`
-   - WebSocket: `/chat`
-
-### Docker Setup
-
-1. Build and run:
-
-   ```bash
-   docker build -t ai-freelancer-marketplace .
-   docker run -p 3000:3000 --env-file .env ai-freelancer-marketplace
-   ```
-
-## API Endpoints
-
-### REST
-
-- **Users**: `POST /users/register`, `POST /users/login`, `GET /users/profile`
-- **Projects**: `POST /projects`, `GET /projects`, `PUT /projects/:id`
-- **Bids**: `POST /bids`, `GET /bids/project/:projectId`
-- **Courses**: `POST /courses`, `GET /courses`
-- **Quizzes**: `POST /quizzes`, `POST /quizzes/submit`
-- **Chat**: WebSocket at `/chat`
-- **Analytics**: `GET /analytics/earnings/:freelancerId`
-- **Recommendations**: `GET /recommendations/projects/:freelancerId`, `GET /recommendations/courses/:freelancerId`
-
-### GraphQL
-
-- **Queries**: `users`, `projects`, `courses`, `bids`
-- **Mutations**: `createProject`, `placeBid`, `enrollCourse`, `submitQuiz`
-
-Explore via Swagger (`/api`) or GraphQL playground (`/graphql`).
-
-## Unique Features
-
-- **AI Recommendations**: Suggests projects and courses based on freelancer skills/history ([Custom Providers](https://docs.nestjs.com/fundamentals/custom-providers)).
-- **Learning Module**: Courses and quizzes for skill enhancement ([Modules](https://docs.nestjs.com/modules)).
-- **Real-Time Chat**: Persistent messaging via WebSockets ([WebSockets](https://docs.nestjs.com/websockets/gateways)).
-- **Competitive Bidding**: AI-suggested bids for competitiveness ([Pipes](https://docs.nestjs.com/pipes)).
-- **Common Module**: Reusable utilities (e.g., logging interceptor, role guard) for maintainability ([Interceptors](https://docs.nestjs.com/interceptors), [Guards](https://docs.nestjs.com/guards)).
-
-## Screenshots
-
-- **Swagger UI**: [Insert screenshot]
-- **GraphQL Playground**: [Insert screenshot]
-- **Real-Time Chat**: [Insert screenshot]
-- **AI Recommendations**: [Insert screenshot of recommended projects/courses]
-
-## Deployment
-
-Deployed at [insert live URL]. Use Docker for local/production deployment.
-
-## Testing
-
-- **Unit Tests**: Services and controllers (>80% coverage).
-- **E2E Tests**: API endpoints and workflows.
-Run tests:
+### 1. Clone the Repository
 
 ```bash
-npm run test
-npm run test:e2e
+git clone <repository-url>
+cd ai-freelancer-marketplace
 ```
 
-## Future Enhancements
+### 2. Set Up Environment Variables
 
-- Integrate real AI API (e.g., Hugging Face) for advanced recommendations.
-- Add payment gateway for contracts.
-- Implement notifications for bid/course updates.
+Create a `.env` file in the project root based on the provided `.env.example` (if available) or configure the following variables:
 
-## NestJS Documentation Coverage
+#### Environment Variables
 
-This project covers all NestJS documentation topics:
+| Variable        | Description                                      |
+|-----------------|--------------------------------------------------|
+| `NODE_ENV`      | Node.js environment (e.g., development, production) |
+| `PORT`          | Port for the API service                        |
+| `DB_TYPE`       | Database type (e.g., postgres)                  |
+| `DB_HOST`       | Database host (use service name `postgres` in Docker) |
+| `DB_PORT`       | Database port                                   |
+| `DB_NAME`       | Database name                                   |
+| `DB_USER`       | Database username                               |
+| `DB_PASSWORD`   | Database password                               |
+| `DATABASE_URL`  | Full database connection string (e.g., `postgres://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:<DB_PORT>/<DB_NAME>`) |
+| `JWT_SECRET`    | Secret key for JWT authentication               |
 
-- **Overview**: Controllers, Providers, Modules, Middleware, Exception Filters, Pipes, Guards, Interceptors.
-- **Techniques**: Authentication, Database, Configuration, Validation, Serialization, File Upload, Task Queues.
-- **Fundamentals**: Custom Providers, Custom Decorators, Dependency Injection.
-- **CLI**: Scaffolding with NestJS CLI ([CLI Overview](https://docs.nestjs.com/cli/overview)).
-- **Recipes**: OpenAPI, Task Queues.
-- **Security**: Authentication, Authorization, Helmet, CORS.
-- **GraphQL**: Dual API support.
-- **Microservices**: Analytics processing.
-- **WebSockets**: Real-time chat.
-- **Testing**: Unit and e2e tests.
+**Note**: Do not hardcode sensitive values in the `.env` file in version control. Ensure `.env` is added to `.gitignore`.
 
-## Contributing
+### 3. Build and Run with Docker Compose
 
-Fork the repository and submit pull requests. Report issues on [GitHub Issues](https://github.com/your-username/ai-freelancer-marketplace/issues).
+```bash
+docker-compose up --build
+```
 
-## License
+This command:
 
-MIT License
+- Builds the API service image using the `Dockerfile`.
+- Starts the PostgreSQL service using the `postgres:14-alpine` image.
+- Maps the API port and PostgreSQL port to the host as defined in `.env`.
+- Mounts the project directory to `/usr/src/app` in the API container for development.
+
+### 4. Access the Application
+
+- **API**: Available at `http://localhost:<PORT>` (replace `<PORT>` with the value from `.env`).
+- **PostgreSQL**: Connect using a tool like `psql` or a GUI client at `localhost:<DB_PORT>` with the credentials from `.env`.
+
+### 5. Stop the Services
+
+```bash
+docker-compose down
+```
+
+To remove volumes (including database data):
+
+```bash
+docker-compose down -v
+```
+
+## Development
+
+- The API service uses a volume mount to reflect code changes in real-time during development.
+- If `node_modules` changes, rebuild the image with `docker-compose up --build`.
+
+## Troubleshooting
+
+- **Database Connection Issues**: Ensure `DB_HOST` is set to `postgres` (the service name) in the `.env` file when running in Docker.
+- **Port Conflicts**: Check if the ports defined in `.env` (`PORT`, `DB_PORT`) are already in use.
+- **Logs**: View logs with `docker-compose logs`.
+
+## Security Notes
+
+- Keep the `.env` file secure and out of version control.
+- Use strong passwords and secrets for `DB_PASSWORD` and `JWT_SECRET`.
+- Regularly update dependencies and Docker images.

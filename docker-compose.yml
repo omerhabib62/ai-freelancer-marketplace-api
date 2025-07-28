@@ -1,46 +1,39 @@
+version: '3.8'
+
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "${PORT}:3000"
     environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_NAME=ai_freelancer_marketplace
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
+    networks:
+      - ai-freelancer-network
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    networks:
-      - app-network
 
   postgres:
     image: postgres:14-alpine
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=ai_freelancer_marketplace
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     networks:
-      - app-network
+      - ai-freelancer-network
+
+networks:
+  ai-freelancer-network:
+    driver: bridge
 
 volumes:
   postgres_data:
-
-networks:
-  app-network:
-    driver: bridge
