@@ -5,31 +5,62 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
     ports:
-      - "${PORT}:3000"
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - postgres
-    networks:
-      - ai-freelancer-network
+      - "${PORT:-3000}:3000"
+      - "${DEBUG_PORT:-9229}:9229"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DB_TYPE=${DB_TYPE:-postgres}
+      - DB_HOST=postgres
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-admin@123}
+      - DB_NAME=${DB_NAME:-ai-freelancer-marketplace}
+      - DATABASE_URL=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-admin@123}@postgres:${DB_PORT:-5432}/${DB_NAME:-ai-freelancer-marketplace}
+    develop:
+      watch:
+      - action: sync
+        path: ./src
+        target: /usr/src/app/src
+        ignore:
+          - node_modules/
+          - dist/
+          - .git/
+      - action: rebuild
+        path: package.json
+    command: npm run start:debug
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ai-freelancer-network
+    restart: unless-stopped
+    # Add support for debugging
+    stdin_open: true
+    tty: true
 
   postgres:
     image: postgres:14-alpine
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT:-5432}:5432"
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-admin@123}
+      - POSTGRES_DB=${DB_NAME:-ai-freelancer-marketplace}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - ai-freelancer-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 networks:
   ai-freelancer-network:
