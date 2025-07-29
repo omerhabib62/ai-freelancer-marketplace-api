@@ -2,9 +2,6 @@ FROM node:18 AS development
 
 WORKDIR /usr/src/app
 
-# Add git for potential npm dependencies from git
-RUN apk add --no-cache git
-
 # Install dependencies
 COPY package*.json ./
 RUN npm config set registry https://registry.npmjs.org/
