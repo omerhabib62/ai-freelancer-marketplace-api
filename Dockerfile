@@ -1,4 +1,4 @@
-FROM node:18-bullseye AS development
+FROM node:20-bullseye AS development
 
 WORKDIR /usr/src/app
 
@@ -24,7 +24,7 @@ EXPOSE 3000 9229
 CMD ["npm", "run", "start:debug"]
 
 # Production build
-FROM node:18-bullseye-slim AS production
+FROM node:20-bullseye-slim AS production
 
 WORKDIR /usr/src/app
 
