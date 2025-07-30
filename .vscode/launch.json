@@ -7,13 +7,16 @@
       "name": "Debug NestJS in Docker",
       "remoteRoot": "/usr/src/app",
       "localRoot": "${workspaceFolder}",
-      "protocol": "inspector",
       "port": 9229,
+      "address": "localhost",
       "restart": true,
-      "address": "0.0.0.0",
+      "sourceMaps": true,
       "skipFiles": ["<node_internals>/**"],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "sourceMaps": true
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }
