@@ -1,5 +1,8 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Freelancer } from './freelancer.entity';
+import { Client } from './client.entity';
+import { Log } from './log.entity';
 
 export enum UserRole {
   FREELANCER = 'freelancer',
@@ -42,4 +45,13 @@ export class User extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
+
+  @OneToMany(() => Freelancer, (freelancer) => freelancer.user)
+  freelancers: Freelancer[];
+
+  @OneToMany(() => Client, (client) => client.user)
+  clients: Client[];
+
+  @OneToMany(() => Log, (log) => log.user)
+  logs: Log[];
 }
