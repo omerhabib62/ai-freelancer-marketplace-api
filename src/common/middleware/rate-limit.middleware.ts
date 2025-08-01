@@ -3,7 +3,7 @@ import {
   NestMiddleware,
   BadRequestException,
 } from '@nestjs/common';
-import { ConfigService } from '../../config/config.service';
+import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
 
 const rateLimitMap = new Map<string, { count: number; last: number }>();

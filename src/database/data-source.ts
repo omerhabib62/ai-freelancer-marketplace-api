@@ -1,77 +1,38 @@
-import { DynamicModule } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceOptions } from 'typeorm';
-import { SeederOptions } from 'typeorm-extension';
-import * as fs from 'fs';
-import * as path from 'path';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { config } from 'dotenv';
+import {
+  NODE_ENV_DEVELOPMENT,
+  NODE_ENV_PRODUCTION,
+} from '../common/constants/config.constants';
 
-export const createDataSourceOptions = (
-  configService: ConfigService,
-): DataSourceOptions & SeederOptions => {
-  const dbType = configService.get<
-    'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb'
-  >('DB_TYPE');
+// Load environment variables based on NODE_ENV
+config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
-  console.log('DB_TYPE:', dbType);
-  console.log('DB_HOST:', configService.get<string>('DB_HOST'));
-  console.log('DB_PORT:', configService.get<number>('DB_PORT'));
-  console.log('DB_NAME:', configService.get<number>('DB_NAME'));
+const configService = new ConfigService();
+const password = configService.get<string>('DB_PASSWORD');
+if (!password) throw new Error('Missing DB_PASSWORD in env');
 
-  if (!dbType) {
-    throw new Error('DB_TYPE is not defined in the environment variables');
-  }
-
-  const projectRoot = process.cwd();
-  const isDevelopment = configService.get<string>('NODE_ENV') == 'development';
-  const fileExtension = isDevelopment ? 'ts' : 'js'; // Use 'ts' for development, 'js' for production
-
-  // Read SSL certificate in production
-  let sslOptions = {};
-  if (process.env.NODE_ENV === 'prod') {
-    const certificatePath = path.join(projectRoot, 'eu-west-2-bundle.pem');
-    const certificate = fs.readFileSync(certificatePath);
-    sslOptions = {
-      extra: {
-        ssl: {
-          ca: certificate,
-        },
-        trustServerCertificate: true,
-      },
-    };
-  }
-
-  return {
-    type: dbType,
-    host: configService.get<string>('DB_HOST'),
-    port: configService.get<number>('DB_PORT'),
-    username: configService.get<string>('DB_USER'),
-    password: configService.get<string>('DB_PASSWORD'),
-    database: configService.get<string>('DB_NAME'),
-    synchronize: false,
-    logging: false,
-    entities: [
-      path.join(
-        projectRoot,
-        isDevelopment
-          ? `dist/**/*.entity.js`
-          : `dist/**/*.entity.${fileExtension}`,
-      ),
-    ],
-    migrations: [
-      path.join(projectRoot, `/dist/src/database/migrations/**/*.js`),
-    ],
-    seeds: [path.join(projectRoot, `/dist/src/database/seeds/**/*.js`)],
-    factories: [
-      path.join(projectRoot, `/dist/src/database/factories/**/*.js}`),
-    ],
-    subscribers: [],
-    migrationsTableName: '_migrations',
-    migrationsRun: false,
-  };
+export const databaseConfig: DataSourceOptions = {
+  type: 'postgres',
+  host: configService.get<string>('DB_HOST'),
+  port: configService.get<number>('DB_PORT'),
+  username: configService.get<string>('DB_USER'),
+  password,
+  database: configService.get<string>('DB_NAME'),
+  entities: ['dist/**/*.entity{.ts,.js}'],
+  migrations: ['dist/migrations/*{.ts,.js}'],
+  synchronize: configService.get<string>('NODE_ENV') !== NODE_ENV_PRODUCTION,
+  logging: configService.get<string>('NODE_ENV') === 'development', //. If set to true then query and error logging will be enabled. You can also specify different types of logging to be enabled, for example ["query", "error", "schema"]. Learn more about Logging. When in production it will be disabled.
+  dropSchema: configService.get<string>('NODE_ENV') === NODE_ENV_DEVELOPMENT,
+  cache: {
+    type: 'redis',
+    options: {
+      host: configService.get<string>('REDIS_HOST') || 'redis',
+      port: configService.get<number>('REDIS_PORT') || 6379,
+    },
+  },
 };
 
-export const DatabaseProvider: DynamicModule = TypeOrmModule.forRootAsync({
-  inject: [ConfigService],
-  useFactory: createDataSourceOptions,
-});
+// Export the DataSource instance for CLI commands
+export default new DataSource(databaseConfig);

@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
-import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
@@ -8,7 +8,7 @@ export class AuthService {
 
   validateToken(token: string): any {
     try {
-      const jwtSecret = this.configService.getJwtSecret();
+      const jwtSecret = this.configService.get<string>('JWT_SECRET');
       const payload = jwt.verify(token, jwtSecret);
       return payload;
     } catch (err) {

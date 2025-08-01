@@ -1,0 +1,18 @@
+npm run typeorm migration:run -- -d ./src/database/data-source.ts
+
+npm run typeorm migration:help
+
+// Show all migrations and migration:show whether they have been run or not
+npm run typeorm migration:show  -- -d ./src/database/data-source.ts 
+// DAta source already passed in package.json cli script.
+
+npm run typeorm migration:generate ./src/migrations/create-user-table
+
+//To clear everything stored in the cache.
+npm run typeorm cache:clear
+
+//For typeorm caching
+https://typeorm.io/docs/query-builder/caching/ 
+
+//For typeorm migrations
+https://typeorm.io/docs/advanced-topics/migrations/
