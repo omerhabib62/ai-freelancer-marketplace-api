@@ -16,8 +16,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: configService.get<string>('DB_NAME'),
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['dist/migrations/*{.ts,.js}'],
+        migrationsTableName: '_migrations',
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
         logging: configService.get<string>('NODE_ENV') === 'development',
+        maxQueryExecutionTime: 60000, //1 min of execution then the logging will be done by nestjs in dev environment
       }),
     }),
   ],
