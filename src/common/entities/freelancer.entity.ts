@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { BaseEntity } from './base.entity';
 import { FreelancerSkill } from './freelancer-skill.entity';
-import { JobRating } from './job-rating.entity';
+import { JobReview } from './job-review.entity';
 import { JobProposal } from './job-proposal.entity';
 
 @Entity('freelancers')
@@ -40,6 +40,6 @@ export class Freelancer extends BaseEntity {
   @OneToMany(() => JobProposal, (jobProposal) => jobProposal.freelancer)
   proposals: JobProposal[];
 
-  @OneToMany(() => JobRating, (jobRating) => jobRating.freelancer)
-  ratings: JobRating[];
+  @OneToMany(() => JobReview, (jobReview) => jobReview.freelancer)
+  ratings: JobReview[];
 }

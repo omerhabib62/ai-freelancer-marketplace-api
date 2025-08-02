@@ -3,7 +3,7 @@ import { User } from './user.entity';
 import { Job } from './job.entity';
 import { BaseEntity } from './base.entity';
 import { ClientType } from '../enums/client-type.enum';
-import { JobRating } from './job-rating.entity';
+import { JobReview } from './job-review.entity';
 
 @Entity('clients')
 export class Client extends BaseEntity {
@@ -36,6 +36,6 @@ export class Client extends BaseEntity {
   @OneToMany(() => Job, (job) => job.client)
   jobs: Job[];
 
-  @OneToMany(() => JobRating, (jobrating) => jobrating.client)
-  ratings: JobRating;
+  @OneToMany(() => JobReview, (jobReview) => jobReview.client)
+  ratings: JobReview;
 }

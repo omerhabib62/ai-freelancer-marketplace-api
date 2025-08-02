@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { JobSkill } from './job-skill.entity';
 import { Client } from './client.entity';
-import { JobRating } from './job-rating.entity';
+import { JobReview } from './job-review.entity';
 import { JobProposal } from './job-proposal.entity';
 import { JobPayment } from './job-payment.entity';
 
@@ -38,6 +38,6 @@ export class Job extends BaseEntity {
   @OneToMany(() => JobPayment, (jobPayment) => jobPayment.job)
   payments: JobPayment[];
 
-  @OneToMany(() => JobRating, (jobRating) => jobRating.job)
-  ratings: JobRating[];
+  @OneToMany(() => JobReview, (jobReview) => jobReview.job)
+  ratings: JobReview[];
 }

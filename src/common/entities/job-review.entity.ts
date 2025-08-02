@@ -3,10 +3,10 @@ import { Job } from './job.entity';
 import { Freelancer } from './freelancer.entity';
 import { Client } from './client.entity';
 import { BaseEntity } from './base.entity';
-import { RatingType } from '../enums/rating-type.enum';
+import { ReviewType } from '../enums/review-type.enum';
 
-@Entity('job_ratings')
-export class JobRating extends BaseEntity {
+@Entity('job_reviews')
+export class JobReview extends BaseEntity {
   @Column({ name: 'jon_id', type: 'int' })
   jobId: number;
 
@@ -14,9 +14,9 @@ export class JobRating extends BaseEntity {
   type: number; // Assuming 'who rated' is an enum or int reference
 
   @Column({ type: 'varchar' })
-  rating: RatingType;
+  rating: ReviewType;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', comment: 'review text of client for review type' })
   comment: string;
 
   @ManyToOne(() => Job, (job) => job.ratings)
