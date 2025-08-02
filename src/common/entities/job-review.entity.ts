@@ -7,7 +7,7 @@ import { ReviewType } from '../enums/review-type.enum';
 
 @Entity('job_reviews')
 export class JobReview extends BaseEntity {
-  @Column({ name: 'jon_id', type: 'int' })
+  @Column({ name: 'job_id', type: 'int' })
   jobId: number;
 
   @Column({ type: 'int' })
