@@ -4,7 +4,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { User } from './entities/user.entity';
-import { Project } from './entities/project.entity';
+import { JobProject } from './entities/job-project.entity';
 import { Bid } from './entities/bid.entity';
 import { Course } from './entities/course.entity';
 import { Enrollment } from './entities/enrollment.entity';
@@ -15,7 +15,7 @@ import { Quiz } from './entities/quiz.entity';
   imports: [
     TypeOrmModule.forFeature([
       User,
-      Project,
+      JobProject,
       Bid,
       Course,
       Quiz,

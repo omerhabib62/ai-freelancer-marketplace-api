@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
-import { Project } from './project.entity';
+import { JobProject } from './job-project.entity';
 
 export enum BidStatus {
   PENDING = 'pending',
@@ -20,8 +20,8 @@ export class Bid extends BaseEntity {
   @ManyToOne(() => User)
   freelancer: User;
 
-  @ManyToOne(() => Project)
-  project: Project;
+  @ManyToOne(() => JobProject)
+  jobProject: JobProject;
 
   @Column({
     type: 'enum',

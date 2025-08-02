@@ -10,7 +10,7 @@ export enum ProjectStatus {
 }
 
 @Entity('projects')
-export class Project extends BaseEntity {
+export class JobProject extends BaseEntity {
   @Column()
   title: string;
 

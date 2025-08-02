@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { User } from './user.entity';
-import { Project } from './project.entity';
+import { JobProject } from './job-project.entity';
 
 @Entity('chat_messages')
 export class ChatMessage extends BaseEntity {
@@ -11,8 +11,8 @@ export class ChatMessage extends BaseEntity {
   @ManyToOne(() => User)
   receiver: User;
 
-  @ManyToOne(() => Project, { nullable: true })
-  project: Project;
+  @ManyToOne(() => JobProject, { nullable: true })
+  jobProject: JobProject;
 
   @Column('text')
   content: string;
