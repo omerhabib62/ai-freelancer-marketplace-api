@@ -3,6 +3,7 @@ import { Job } from './job.entity';
 import { Freelancer } from './freelancer.entity';
 import { Client } from './client.entity';
 import { BaseEntity } from './base.entity';
+import { RatingType } from '../enums/rating-type.enum';
 
 @Entity('job_ratings')
 export class JobRating extends BaseEntity {
@@ -12,8 +13,8 @@ export class JobRating extends BaseEntity {
   @Column({ type: 'int' })
   type: number; // Assuming 'who rated' is an enum or int reference
 
-  @Column({ type: 'enum', enum: ['freelancer', 'client'] })
-  rating: string;
+  @Column({ type: 'varchar' })
+  rating: RatingType;
 
   @Column({ type: 'text' })
   comment: string;
