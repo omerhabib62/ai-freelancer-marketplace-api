@@ -9,8 +9,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('GetWork')
-    .setDescription('AI Freelancer Marketplace')
+    .setTitle('SparkleCrunch')
+    .setDescription('Where Talent Sparkles and Projects Crunch Deadlines.')
     .setVersion('1.0')
     // .addTag('cats')
     .build();
