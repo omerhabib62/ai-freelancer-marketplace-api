@@ -14,6 +14,9 @@ export class ChatMessage extends BaseEntity {
   @ManyToOne(() => JobProject, { nullable: true })
   jobProject: JobProject;
 
+  @Column({ type: 'boolean', default: 'false' })
+  markAsRead: boolean;
+
   @Column('text')
   content: string;
 
