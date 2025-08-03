@@ -1,8 +1,10 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, BeforeInsert } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Freelancer } from './freelancer.entity';
 import { Client } from './client.entity';
 import { Log } from './log.entity';
+import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 export enum UserRole {
   FREELANCER = 'freelancer',
@@ -28,6 +30,7 @@ export class User extends BaseEntity {
   phone: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({
@@ -54,4 +57,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Log, (log) => log.user)
   logs: Log[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }

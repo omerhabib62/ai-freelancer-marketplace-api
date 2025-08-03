@@ -13,6 +13,10 @@ export class UsersService {
     return this.users.find((u) => u.id === id);
   }
 
+  async findByEmail(email: string) {
+    return this.users.find((u) => u.email === email);
+  }
+
   create(user: any) {
     const newUser = { ...user, id: this.idCounter++ };
     this.users.push(newUser);
