@@ -6,7 +6,7 @@ npm run typeorm migration:help
 npm run typeorm migration:show  -- -d ./src/database/data-source.ts 
 // DAta source already passed in package.json cli script.
 
-npm run typeorm migration:generate ./src/migrations/create-user-table
+npm run typeorm migration:generate ./src/database/migrations/InitialMigration
 
 //To clear everything stored in the cache.
 npm run typeorm cache:clear
@@ -16,3 +16,5 @@ https://typeorm.io/docs/query-builder/caching/
 
 //For typeorm migrations
 https://typeorm.io/docs/advanced-topics/migrations/
+
+docker compose exec postgres psql -U postgres -c "CREATE DATABASE \"ai-freelancer-marketplace\";"
