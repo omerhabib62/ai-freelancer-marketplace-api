@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User, UserRole } from '../common/entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
   private users = [];
   private idCounter = 1;
 
@@ -13,14 +21,21 @@ export class UsersService {
     return this.users.find((u) => u.id === id);
   }
 
-  async findByEmail(email: string) {
-    return this.users.find((u) => u.email === email);
+  async findByEmail(email: string, relations: string[] = []) {
+    return this.userRepository.findOne({
+      where: {
+        email,
+      },
+      relations,
+    });
   }
 
-  create(user: any) {
-    const newUser = { ...user, id: this.idCounter++ };
-    this.users.push(newUser);
-    return newUser;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.userRepository.create({
+      ...createUserDto,
+      role: createUserDto.role as UserRole,
+    });
+    return this.userRepository.save(user);
   }
 
   update(id: number, update: any) {

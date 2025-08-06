@@ -10,9 +10,13 @@ import { LocalStrategy } from './local.strategy';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { User } from '../common/entities/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { IsEmailUniqueConstraint } from '../common/validators/is-email-unique-constraint.validator';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     ConfigModule,
     UsersModule,
     PassportModule,
@@ -34,6 +38,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
     LocalStrategy,
     JwtAuthGuard,
     LocalAuthGuard,
+    IsEmailUniqueConstraint,
   ],
   exports: [JwtAuthGuard],
   controllers: [AuthController],

@@ -1,17 +1,48 @@
-import { IsEmail, IsIn, IsString } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { UserRole } from '../../common/entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmailUnique } from 'src/common/decorators/is-email-unique.decorator';
 
 export class RegisterDto {
+  @ApiProperty({
+    description: 'User email address',
+    example: 'user@example.com',
+  })
+  @IsNotEmpty({ message: 'Email is required' })
   @IsEmail()
+  @IsEmailUnique({ message: 'Email already exists' })
   email: string;
 
+  @ApiProperty({
+    description: "User's password",
+    example: '12345678',
+  })
   @IsString()
   password: string;
 
+  @ApiProperty({
+    description: 'User role',
+    enumSchema: {
+      description: 'There are following roles',
+      default: UserRole.CLIENT,
+    },
+    example: UserRole.CLIENT,
+  })
+  @IsNotEmpty({ message: 'Email is required' })
   @IsString()
   @IsIn(Object.values(UserRole))
-  role: string; // Will be validated against UserRole values
+  role: string;
 
+  @IsNotEmpty({ message: 'Email is required' })
+  @ApiProperty({ description: "User's first name", example: 'John' })
   @IsString()
-  name: string;
+  firstName: string;
+
+  @ApiProperty({ description: "User's middle name", example: 'Snow' })
+  @IsString()
+  middleName: string;
+
+  @ApiProperty({ description: "User's last name", example: 'Stark' })
+  @IsString()
+  lastName: string;
 }

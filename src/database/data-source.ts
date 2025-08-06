@@ -17,7 +17,7 @@ export const databaseConfig: DataSourceOptions = {
   username: configService.get<string>('DB_USER'),
   password,
   database: configService.get<string>('DB_NAME'),
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities: ['dist/common/entities/*.entity{.ts,.js}'],
   migrations: ['dist/database/migrations/*{.ts,.js}'],
   synchronize: false,
   //configService.get<string>('NODE_ENV') !== NODE_ENV_PRODUCTION,

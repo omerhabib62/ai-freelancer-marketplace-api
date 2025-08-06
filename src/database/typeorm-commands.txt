@@ -21,3 +21,11 @@ docker compose exec postgres psql -U postgres -c "CREATE DATABASE \"ai-freelance
 
 /// -f flag means "follow", so it will live-stream the logs like a console.
 docker logs -f ai-freelancer-marketplace-api-1
+
+sudo chown -R omers-pc:omers-pc /home/omers-pc/Projects/ai-freelancer-marketplace/dist
+
+rm -rf dist
+
+rm -rf dist/database/migrations
+
+npm install --save-dev rimraf

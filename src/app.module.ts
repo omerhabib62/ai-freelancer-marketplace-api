@@ -7,9 +7,11 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from './config/config.module';
+import { LoggerModule } from './common/logger/logger.module';
 
 @Module({
   imports: [
+    LoggerModule,
     ConfigModule,
     UsersModule,
     DatabaseModule,

@@ -26,8 +26,8 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column({ type: 'varchar' })
-  phone: string;
+  @Column({ type: 'varchar', length: '20', nullable: true })
+  phone?: string;
 
   @Column()
   @Exclude()
