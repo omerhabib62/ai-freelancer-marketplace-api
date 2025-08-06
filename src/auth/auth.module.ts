@@ -13,12 +13,14 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { User } from '../common/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IsEmailUniqueConstraint } from '../common/validators/is-email-unique-constraint.validator';
+import { RedisModule } from '../common/modules/redis.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     ConfigModule,
     UsersModule,
+    RedisModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

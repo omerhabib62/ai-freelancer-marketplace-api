@@ -33,7 +33,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   // Tell class-validator to use NestJS's dependency injection container
-  useContainer(app. select(AppModule), { fallbackOnErrors: true });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Define a whitelist for allowed origins to handle CORS
   const whiteList = ['http://localhost:3000'];
@@ -76,6 +76,15 @@ async function bootstrap() {
     .setDescription(appDescription)
     .setVersion(appVersion)
     .addServer(swaggerServerUrl, `${appName} ${appVersion}`)
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'Enter JWT token',
+      },
+      'access-token', // This is a key to reference this security scheme
+    )
     // .addTag('cats')
     .build();
 
