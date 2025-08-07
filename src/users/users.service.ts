@@ -17,8 +17,10 @@ export class UsersService {
     return this.users;
   }
 
-  findOne(id: number) {
-    return this.users.find((u) => u.id === id);
+  async findOne(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+    });
   }
 
   async findByEmail(email: string, relations: string[] = []) {
@@ -50,5 +52,9 @@ export class UsersService {
     if (idx === -1) return null;
     const removed = this.users.splice(idx, 1);
     return removed[0];
+  }
+
+  findAllUsers() {
+    return this.userRepository.findOne({});
   }
 }

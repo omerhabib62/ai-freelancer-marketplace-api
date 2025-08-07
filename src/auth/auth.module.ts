@@ -14,6 +14,8 @@ import { User } from '../common/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IsEmailUniqueConstraint } from '../common/validators/is-email-unique-constraint.validator';
 import { RedisModule } from '../common/modules/redis.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -41,6 +43,10 @@ import { RedisModule } from '../common/modules/redis.module';
     JwtAuthGuard,
     LocalAuthGuard,
     IsEmailUniqueConstraint,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
   exports: [JwtAuthGuard],
   controllers: [AuthController],

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Logger,
   Post,
   Request,
   UseGuards,
@@ -21,11 +22,19 @@ import {
 } from '@nestjs/swagger';
 import { LoginDto } from './dtos/login.dto';
 import { LogoutDto } from './dtos/logout.dto';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '../common/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { AuthorizedUser } from './interfaces/authorized-user.interface';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  private readonly loggerService = new Logger(AuthController.name);
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+  ) {}
 
   @Post('register')
   @ApiOperation({
@@ -35,6 +44,16 @@ export class AuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async register(@Body(ValidationPipe) dto: RegisterDto) {
     return this.authService.register(dto);
+  }
+
+  // Restricted to admin only
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN)
+  @Get('all-users')
+  @ApiOperation({ summary: 'Get all users (Admin only)' })
+  async getAllUsers() {
+    return this.userService.findAllUsers();
   }
 
   @UseGuards(LocalAuthGuard)
@@ -55,10 +74,35 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async login(@Request() req, @Body() loginDto: LoginDto) {
+    const authorize: AuthorizedUser = await this.authService.authorize(
+      this.userService,
+      loginDto,
+    );
+    if (!authorize.success) {
+      return {
+        success: false,
+        message: authorize.message,
+        data: null,
+      };
+    }
+
     return this.authService.login(
-      req.user,
+      authorize.data,
       `Login from ${req.headers['user-agent'] || 'unknown device'}`,
     );
+  }
+
+  @Post('refresh-token')
+  @ApiOperation({ summary: 'Refresh access token using refresh token' })
+  @ApiBody({
+    schema: {
+      properties: {
+        refreshToken: { type: 'string' },
+      },
+    },
+  })
+  async refreshToken(@Body() body: { refreshToken: string }) {
+    return this.authService.refreshToken(body.refreshToken);
   }
 
   @ApiBearerAuth('access-token')
