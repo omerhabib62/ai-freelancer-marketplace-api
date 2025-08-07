@@ -16,7 +16,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private redisService: RedisService,
-  ) { }
+  ) {}
 
   validateToken(token: string): any {
     try {
@@ -51,7 +51,7 @@ export class AuthService {
     const sessionId = await this.redisService.createSession(user.id, {
       lastLogin: new Date(),
       role: user.role,
-      deviceInfo: requestMessage || 'Unknown device'
+      deviceInfo: requestMessage || 'Unknown device',
     });
     return {
       accessToken: this.jwtService.sign(payload),
@@ -61,12 +61,11 @@ export class AuthService {
     };
   }
 
-
   async logoutAll(userId: number) {
     const count = await this.redisService.deleteAllUserSessions(userId);
     return {
       success: true,
-      message: `Successfully logged out from all devices (${count} sessions)`
+      message: `Successfully logged out from all devices (${count} sessions)`,
     };
   }
 
@@ -91,7 +90,6 @@ export class AuthService {
   async getUserSessions(userId: number) {
     return this.redisService.getAllUserSessions(userId);
   }
-
 
   private excludePassword(user: any): Omit<User, 'password'> {
     const { password, ...userWithoutPassword } = user;
