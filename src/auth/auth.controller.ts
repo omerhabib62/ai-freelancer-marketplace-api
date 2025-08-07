@@ -12,14 +12,20 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dtos/register.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto } from './dtos/login.dto';
 import { LogoutDto } from './dtos/logout.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('register')
   @ApiOperation({
@@ -43,13 +49,16 @@ export class AuthController {
         accessToken: { type: 'string' },
         sessionId: { type: 'string' },
         user: { type: 'object' },
-        message: { type: 'string' }
-      }
-    }
+        message: { type: 'string' },
+      },
+    },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async login(@Request() req, @Body() loginDto: LoginDto) {
-    return this.authService.login(req.user, `Login from ${req.headers['user-agent'] || 'unknown device'}`);
+    return this.authService.login(
+      req.user,
+      `Login from ${req.headers['user-agent'] || 'unknown device'}`,
+    );
   }
 
   @ApiBearerAuth('access-token')
@@ -66,7 +75,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout-all')
   @ApiOperation({ summary: 'Logout from all devices' })
-  @ApiResponse({ status: 200, description: 'Logged out from all devices successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Logged out from all devices successfully',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async logoutAll(@Request() req) {
     return this.authService.logoutAll(req.user.userId);
