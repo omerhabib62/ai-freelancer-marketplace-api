@@ -36,7 +36,7 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Define a whitelist for allowed origins to handle CORS
-  const whiteList = ['http://localhost:3000'];
+  const whiteList = ['http://localhost:3000', 'http://localhost:3001'];
 
   // Enable CORS with custom logic to check the origin against the whitelist
   app.enableCors({
