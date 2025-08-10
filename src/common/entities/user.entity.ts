@@ -5,12 +5,7 @@ import { Client } from './client.entity';
 import { Log } from './log.entity';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
-
-export enum UserRole {
-  FREELANCER = 'freelancer',
-  CLIENT = 'client',
-  ADMIN = 'admin',
-}
+import { UserRole } from '../enums/roles.enum';
 
 @Entity('users')
 export class User extends BaseEntity {

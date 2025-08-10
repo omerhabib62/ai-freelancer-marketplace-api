@@ -1,7 +1,7 @@
 import { IsEmail, IsIn, IsNotEmpty, IsString } from 'class-validator';
-import { UserRole } from '../../common/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmailUnique } from 'src/common/decorators/is-email-unique.decorator';
+import { IsEmailUnique } from '../../common/decorators/is-email-unique.decorator';
+import { UserRole } from '../../common/enums/roles.enum';
 
 export class RegisterDto {
   @ApiProperty({

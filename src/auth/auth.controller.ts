@@ -23,9 +23,9 @@ import {
 import { LoginDto } from './dtos/login.dto';
 import { LogoutDto } from './dtos/logout.dto';
 import { Roles } from '../common/decorators/roles.decorator';
-import { UserRole } from '../common/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthorizedUser } from './interfaces/authorized-user.interface';
+import { UserRole } from '../common/enums/roles.enum';
 
 @ApiTags('auth')
 @Controller('auth')
